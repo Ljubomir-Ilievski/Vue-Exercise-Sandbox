@@ -35,7 +35,7 @@ export default {
 <style scoped>
 
 .component {
-  width: 15vw;
+  width: 10vw;
   min-width: 150px;
   height: 90vh;
   border-color: #F78764;

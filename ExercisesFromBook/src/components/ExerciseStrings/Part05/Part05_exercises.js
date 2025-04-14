@@ -5,10 +5,11 @@ import Exercise04 from '@/components/ExerciseStrings/Part05/Exercise04.js'
 import Exercise05 from '@/components/ExerciseStrings/Part05/Exercise05.js'
 import Exercise06 from '@/components/ExerciseStrings/Part05/Exercise06.js'
 import Exercise07 from '@/components/ExerciseStrings/Part05/Exercise07.js'
+import Activity01 from '@/components/ExerciseStrings/Part05/Activity01.js'
 
 
 export const Lecture05 = {
   exercises: [Exercise01, Exercise02, Exercise03, Exercise04, Exercise05,
-              Exercise06, Exercise07],
+              Exercise06, Exercise07, Activity01],
   name: "Lecture05"
 }
