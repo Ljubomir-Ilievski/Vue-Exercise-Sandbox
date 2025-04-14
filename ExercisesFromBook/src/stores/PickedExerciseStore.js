@@ -46,6 +46,7 @@ export const PickedExerciseStore = defineStore("PickedExerciseStore", {
     },
 
     changeFileCodeRWAPI(file) {
+      localStorage.setItem("activeFilePath", file.path);
       this.currentActiveFile = file.name
       fetchFileCode(file.path).then(result => this.appcode = result)
     },
@@ -79,6 +80,8 @@ export const PickedExerciseStore = defineStore("PickedExerciseStore", {
 
 
     changeExerciseRWAPI(exercise) {
+      localStorage.setItem("activeFilePath", exercise.components[App_Name].path);
+      localStorage.setItem("Exercise", JSON.stringify(exercise));
       let routerPath = exercise.routerPath ? exercise.routerPath : null
       console.log("ROUTER PATH WHILE CHANGING", routerPath)
       document.getElementById("iframeExerciseApp").contentWindow.postMessage({action: "ChangeExercise", exercisePath: exercise.components[App_Name].path,

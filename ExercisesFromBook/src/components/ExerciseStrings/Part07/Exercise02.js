@@ -22,6 +22,13 @@ const App = "<script setup>\n" +
 "</script>\n" +
 "\n" +
 "<template>\n" +
+"  <header>\n" +
+"    <nav>\n" +
+"      <RouterLink to=\"/\">Home</RouterLink>\n" +
+"      <RouterLink to=\"/about\">About</RouterLink>\n" +
+"      <RouterLink :to=\"{ name: 'messageFeed' }\">Message Feed</RouterLink>\n" +
+"    </nav>\n" +
+"  </header>\n" +
 "  <RouterView />\n" +
 "</template>\n" +
 "\n" +
@@ -206,7 +213,7 @@ const IconTooling = "<!-- This icon is from <https://github.com/Templarian/Mater
 const indexRouter = "import { createRouter, createWebHistory } from 'vue-router'\n" +
 "import HomeView from './HomeView.vue'\n" +
 "\n" +
-"export const routes = [\n" +
+"const routes = [\n" +
 "  {\n" +
 "    path: '/',\n" +
 "    name: 'home',\n" +
@@ -215,10 +222,10 @@ const indexRouter = "import { createRouter, createWebHistory } from 'vue-router'
 "  {\n" +
 "    path: '/about',\n" +
 "    name: 'about',\n" +
-"    component: () => import('./AboutView.vue')\n" +
+"    component: () => import('./AboutView.vue'),\n" +
 "  },\n" +
 "  {\n" +
-"    path: '/messages',\n" +
+"    path: '/messagesFeed',\n" +
 "    name: 'messageFeed',\n" +
 "    component: () => import('./MessageFeed.vue')\n" +
 "  }\n" +
@@ -450,22 +457,16 @@ const Exercise02 = {
             resetCode: AboutView
             },
 
-            "HelloWorld.vue": {
-            name: "HelloWorld.vue",
-            path: "Part07/Exercise02/HelloWorld.vue",
-            resetCode: HelloWorld
-            },
-
-            "HomeView.vue": {
-            name: "HomeView.vue",
-            path: "Part07/Exercise02/HomeView.vue",
-            resetCode: HomeView
-            },
-
           "MessageFeed.vue": {
             name: "MessageFeed.vue",
             path: "Part07/Exercise02/MessageFeed.vue",
             resetCode: MessageFeed
+          },
+
+          "HomeView.vue": {
+            name: "HomeView.vue",
+            path: "Part07/Exercise02/HomeView.vue",
+            resetCode: HomeView
           },
 
           "TheWelcome.vue": {
@@ -479,6 +480,12 @@ const Exercise02 = {
             path: "Part07/Exercise02/WelcomeItem.vue",
             resetCode: WelcomeItem
           },
+
+            "HelloWorld.vue": {
+            name: "HelloWorld.vue",
+            path: "Part07/Exercise02/HelloWorld.vue",
+            resetCode: HelloWorld
+            },
 
             "IconCommunity.vue": {
             name: "IconCommunity.vue",

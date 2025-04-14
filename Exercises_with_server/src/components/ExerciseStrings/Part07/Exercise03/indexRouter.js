@@ -11,12 +11,34 @@ const routes = [
     path: '/about',
     name: 'about',
     component: () => import('./AboutView.vue'),
+    props: true,
   },
   {
     path: '/messagesFeed',
     name: 'messageFeed',
-    component: () => import('./MessageFeed.vue')
+    component: () => import('./MessageFeed.vue'),
+    props: route => ({
+        messages: route.query.messages?.length > 0 ? route.query.messages : []
+      }),
+    beforeEnter: async (to, from, next) => {
+      if (!to.query || !to.query.messages) {
+        const module = await import ('./messages.js');
+        const messages = module.default;
+        if (messages && messages.length > 0) {
+          to.query.messages = messages;
+        }
+      }
+
+      next()
+    }
+  },
+  {
+    path: '/message',
+    name: 'message',
+    component: () => import('./Message.vue'),
+    props: route => ({ content: route.query.content })
   }
+
 ]
 
 const router = createRouter({

@@ -2,21 +2,9 @@ import { App_Name } from '@/components/ExerciseStrings/SomeConsts/consts.js'
 
 const AboutView = "<template>\n" +
 "  <div class=\"about\">\n" +
-"    <h1>About {{user}}</h1>\n" +
+"    <h1>This is an about page</h1>\n" +
 "  </div>\n" +
 "</template>\n" +
-"<script setup>\n" +
-"import { defineProps } from 'vue'\n" +
-"\n" +
-"const { user } = defineProps({\n" +
-"  user: {\n" +
-"    default: '',\n" +
-"    type: String\n" +
-"  }\n" +
-"})\n" +
-"</script>\n" +
-"\n" +
-"\n" +
 "<style>\n" +
 "@media (min-width: 1024px) {\n" +
 "  .about {\n" +
@@ -36,7 +24,7 @@ const App = "<script setup>\n" +
 "  <header>\n" +
 "    <nav>\n" +
 "      <RouterLink to=\"/\">Home</RouterLink>\n" +
-"      <RouterLink :to=\"{ name: 'about', params: { user: 'Alex' } }\">About</RouterLink>\n" +
+"      <RouterLink :to=\"{ name: 'about' }\">About</RouterLink>\n" +
 "      <RouterLink :to=\"{ name: 'messageFeed' }\">Message Feed</RouterLink>\n" +
 "    </nav>\n" +
 "  </header>\n" +
@@ -108,53 +96,15 @@ const App = "<script setup>\n" +
 "</style>\n"
 
 
-const HelloWorld = "<script setup>\n" +
-"defineProps({\n" +
-"  msg: {\n" +
-"    type: String,\n" +
-"    required: true\n" +
-"  }\n" +
-"})\n" +
-"</script>\n" +
-"\n" +
-"<template>\n" +
-"  <div class=\"greetings\">\n" +
-"    <h1 class=\"green\">{{ msg }}</h1>\n" +
-"    <h3>\n" +
-"      You’ve successfully created a project with\n" +
-"      <a target=\"_blank\" href=\"https://vitejs.dev/\">Vite</a> +\n" +
-"      <a target=\"_blank\" href=\"https://vuejs.org/\">Vue 3</a>.\n" +
-"    </h3>\n" +
-"  </div>\n" +
-"</template>\n" +
-"\n" +
-"<style scoped>\n" +
-"h1 {\n" +
-"  font-weight: 500;\n" +
-"  font-size: 2.6rem;\n" +
-"  top: -10px;\n" +
-"}\n" +
-"\n" +
-"h3 {\n" +
-"  font-size: 1.2rem;\n" +
-"}\n" +
-"\n" +
-".greetings h1,\n" +
-".greetings h3 {\n" +
-"  text-align: center;\n" +
-"}\n" +
-"\n" +
-"@media (min-width: 1024px) {\n" +
-"  .greetings h1,\n" +
-"  .greetings h3 {\n" +
-"    text-align: left;\n" +
-"  }\n" +
-"}\n" +
-"</style>\n"
+const Error = "<template>\n" +
+"    <div>\n" +
+"        <h2>No param passed.</h2>\n" +
+"    </div>\n" +
+"</template>\n"
 
 
 const HomeView = "<script setup>\n" +
-"import TheWelcome from '@/components/ExerciseStrings/Part07/Exercise04/TheWelcome.vue'\n" +
+"import TheWelcome from '@/components/ExerciseStrings/Part07/Exercise03/TheWelcome.vue'\n" +
 "</script>\n" +
 "\n" +
 "<template>\n" +
@@ -221,7 +171,7 @@ const IconTooling = "<!-- This icon is from <https://github.com/Templarian/Mater
 "</template>\n"
 
 
-const index = "import { createRouter, createWebHistory } from 'vue-router'\n" +
+const indexRouter = "import { createRouter, createWebHistory } from 'vue-router'\n" +
 "import HomeView from './HomeView.vue'\n" +
 "\n" +
 "const routes = [\n" +
@@ -234,18 +184,17 @@ const index = "import { createRouter, createWebHistory } from 'vue-router'\n" +
 "    path: '/about',\n" +
 "    name: 'about',\n" +
 "    component: () => import('./AboutView.vue'),\n" +
-"    props: true,\n" +
 "  },\n" +
 "  {\n" +
 "    path: '/messagesFeed',\n" +
 "    name: 'messageFeed',\n" +
 "    component: () => import('./MessageFeed.vue'),\n" +
 "    props: route => ({\n" +
-"        messages: route.query.messages?.length > 0 ? route.query.messages : []\n" +
-"      }),\n" +
+"      messages: route.query.messages?.length > 0 ? route.query.messages : []\n" +
+"    }),\n" +
 "    beforeEnter: async (to, from, next) => {\n" +
 "      if (!to.query || !to.query.messages) {\n" +
-"        const module = await import ('../assets/messages.js');\n" +
+"        const module = await import ('./messages.js');\n" +
 "        const messages = module.default;\n" +
 "        if (messages && messages.length > 0) {\n" +
 "          to.query.messages = messages;\n" +
@@ -254,14 +203,23 @@ const index = "import { createRouter, createWebHistory } from 'vue-router'\n" +
 "\n" +
 "      next()\n" +
 "    }\n" +
-"  },\n" +
-"  {\n" +
-"    path: '/message',\n" +
+"  },{\n" +
+"    path: '/message/:id',\n" +
 "    name: 'message',\n" +
-"    component: () => import('../views/Message.vue'),\n" +
-"    props: route => ({ content: route.query.content })\n" +
+"    component: () => import('./Message.vue'),\n" +
+"    props: route => ({ id: route.params.id, content: route.query.content }),\n" +
+"    async beforeEnter(to, from, next) {\n" +
+"      if (to.params && to.params.id) {\n" +
+"        const id = to.params.id;\n" +
+"        const module = await import ('./messages.js');\n" +
+"        const messages = module.default;\n" +
+"        if (messages && messages.length > 0 && id < messages.length) {\n" +
+"          to.query.content = messages[id];\n" +
+"        }\n" +
+"      }\n" +
+"      next()\n" +
+"    }, \n" +
 "  }\n" +
-"\n" +
 "]\n" +
 "\n" +
 "const router = createRouter({\n" +
@@ -292,18 +250,19 @@ const MessageFeed = "<template>\n" +
 "  <div>\n" +
 "    <h2> Message Feed </h2>\n" +
 "    <div v-for=\"(m, i) in messages\" :key=\"i\" >\n" +
-"      <RouterLink :to=\"`/message?content=${m}`\">\n" +
+"      <RouterLink :to=\"`/message/${i}`\">\n" +
 "        {{ m }}\n" +
 "      </RouterLink>\n" +
 "    </div>\n" +
 "</div>\n" +
 "</template>\n" +
 "<script setup>\n" +
-"const props = defineProps({\n" +
-"  messages: {\n" +
-"    type: Array,\n" +
-"    default: [],\n" +
-"  }\n" +
+"import { defineProps } from 'vue'\n" +
+"const { messages } = defineProps({\n" +
+"    messages: {\n" +
+"        default: [],\n" +
+"        type: Array\n" +
+"    }\n" +
 "})\n" +
 "</script>\n"
 
@@ -497,7 +456,6 @@ const Exercise04 = {
         name: "Exercise04",
         // AppComponent: App,
         routerPath: "Part07/Exercise04/indexRouter.js",
-
         components: {
 
           "App.vue": {
@@ -507,22 +465,22 @@ const Exercise04 = {
           },
 
           "indexRouter.js": {
-            name: "index.js",
+            name: "indexRouter.js",
             path: "Part07/Exercise04/indexRouter.js",
-            resetCode: index
+            resetCode: indexRouter
           },
 
-            "AboutView.vue": {
+            "Error.vue": {
+            name: "Error.vue",
+            path: "Part07/Exercise04/Error.vue",
+            resetCode: Error
+            },
+
+          "AboutView.vue": {
             name: "AboutView.vue",
             path: "Part07/Exercise04/AboutView.vue",
             resetCode: AboutView
-            },
-
-            "HelloWorld.vue": {
-            name: "HelloWorld.vue",
-            path: "Part07/Exercise04/HelloWorld.vue",
-            resetCode: HelloWorld
-            },
+          },
 
             "HomeView.vue": {
             name: "HomeView.vue",

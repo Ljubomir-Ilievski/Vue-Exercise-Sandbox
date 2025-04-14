@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from './HomeView.vue'
 
-export const routes = [
+const routes = [
   {
     path: '/',
     name: 'home',
@@ -10,10 +10,10 @@ export const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import('./AboutView.vue')
+    component: () => import('./AboutView.vue'),
   },
   {
-    path: '/messages',
+    path: '/messagesFeed',
     name: 'messageFeed',
     component: () => import('./MessageFeed.vue')
   }

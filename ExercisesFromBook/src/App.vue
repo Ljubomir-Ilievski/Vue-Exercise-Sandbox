@@ -57,8 +57,13 @@ export default {
   },
 
   beforeMount() {
-    fetchFileCode(this.pickedExerciseStore.currentExercise.components[this.pickedExerciseStore.currentActiveFile].path)
+    fetchFileCode(localStorage.getItem("activeFilePath") ? localStorage.getItem("activeFilePath")
+      : this.pickedExerciseStore.currentExercise.components[this.pickedExerciseStore.currentActiveFile].path)
       .then(text => this.pickedExerciseStore.appcode = text)
+
+    localStorage.getItem("Exercise") ? this.pickedExerciseStore.currentExercise = JSON.parse(localStorage.getItem("Exercise")) : null
+
+
   },
 
 };

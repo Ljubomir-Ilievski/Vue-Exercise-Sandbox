@@ -1,16 +1,19 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import Default from './default.vue'
+import { shallowRef } from 'vue'
+
+const layout = shallowRef(Default)
+
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink :to="{ name: 'about' }">About</RouterLink>
-      <RouterLink :to="{ name: 'messageFeed' }">Message Feed</RouterLink>
-    </nav>
-  </header>
-  <RouterView />
+  <component :is="layout">
+    <RouterView 
+      :currentLayout="layout" 
+      @update:currentLayout="newLayout => layout = newLayout" 
+    />
+  </component>
 </template>
 
 <style scoped>

@@ -2,9 +2,20 @@ import { App_Name } from '@/components/ExerciseStrings/SomeConsts/consts.js'
 
 const AboutView = "<template>\n" +
 "  <div class=\"about\">\n" +
-"    <h1>This is an about page</h1>\n" +
+"    <h1>About {{user}}</h1>\n" +
 "  </div>\n" +
 "</template>\n" +
+"<script setup>\n" +
+"import { defineProps } from 'vue'\n" +
+"\n" +
+"const { user } = defineProps({\n" +
+"  user: {\n" +
+"    default: '',\n" +
+"    type: String\n" +
+"  }\n" +
+"})\n" +
+"</script>\n" +
+"\n" +
 "\n" +
 "<style>\n" +
 "@media (min-width: 1024px) {\n" +
@@ -25,7 +36,7 @@ const App = "<script setup>\n" +
 "  <header>\n" +
 "    <nav>\n" +
 "      <RouterLink to=\"/\">Home</RouterLink>\n" +
-"      <RouterLink to=\"/about\">About</RouterLink>\n" +
+"      <RouterLink :to=\"{ name: 'about', params: { user: 'Alex' } }\">About</RouterLink>\n" +
 "      <RouterLink :to=\"{ name: 'messageFeed' }\">Message Feed</RouterLink>\n" +
 "    </nav>\n" +
 "  </header>\n" +
@@ -210,7 +221,7 @@ const IconTooling = "<!-- This icon is from <https://github.com/Templarian/Mater
 "</template>\n"
 
 
-const indexRouter = "import { createRouter, createWebHistory } from 'vue-router'\n" +
+const index = "import { createRouter, createWebHistory } from 'vue-router'\n" +
 "import HomeView from './HomeView.vue'\n" +
 "\n" +
 "const routes = [\n" +
@@ -223,12 +234,34 @@ const indexRouter = "import { createRouter, createWebHistory } from 'vue-router'
 "    path: '/about',\n" +
 "    name: 'about',\n" +
 "    component: () => import('./AboutView.vue'),\n" +
+"    props: true,\n" +
 "  },\n" +
 "  {\n" +
 "    path: '/messagesFeed',\n" +
 "    name: 'messageFeed',\n" +
-"    component: () => import('./MessageFeed.vue')\n" +
+"    component: () => import('./MessageFeed.vue'),\n" +
+"    props: route => ({\n" +
+"        messages: route.query.messages?.length > 0 ? route.query.messages : []\n" +
+"      }),\n" +
+"    beforeEnter: async (to, from, next) => {\n" +
+"      if (!to.query || !to.query.messages) {\n" +
+"        const module = await import ('../assets/messages.js');\n" +
+"        const messages = module.default;\n" +
+"        if (messages && messages.length > 0) {\n" +
+"          to.query.messages = messages;\n" +
+"        }\n" +
+"      }\n" +
+"\n" +
+"      next()\n" +
+"    }\n" +
+"  },\n" +
+"  {\n" +
+"    path: '/message',\n" +
+"    name: 'message',\n" +
+"    component: () => import('../views/Message.vue'),\n" +
+"    props: route => ({ content: route.query.content })\n" +
 "  }\n" +
+"\n" +
 "]\n" +
 "\n" +
 "const router = createRouter({\n" +
@@ -239,22 +272,50 @@ const indexRouter = "import { createRouter, createWebHistory } from 'vue-router'
 "export default router\n"
 
 
+const Message = "<template>\n" +
+"    <div>\n" +
+"        <p>{{content}}</p>\n" +
+"    </div>\n" +
+"</template>\n" +
+"<script setup>\n" +
+"import { defineProps } from 'vue'\n" +
+"const { content } = defineProps({\n" +
+"    content: {\n" +
+"        default: '',\n" +
+"        type: String\n" +
+"    }\n" +
+"})\n" +
+"</script>\n"
+
+
 const MessageFeed = "<template>\n" +
 "  <div>\n" +
 "    <h2> Message Feed </h2>\n" +
-"    <p v-for=\"(m, i) in messages\" :key=\"i\">\n" +
-"    {{ m }}\n" +
-"    </p>\n" +
+"    <div v-for=\"(m, i) in messages\" :key=\"i\" >\n" +
+"      <RouterLink :to=\"`/message?content=${m}`\">\n" +
+"        {{ m }}\n" +
+"      </RouterLink>\n" +
+"    </div>\n" +
 "</div>\n" +
 "</template>\n" +
 "<script setup>\n" +
-"const messages = [\n" +
-"    'Hello, how are you?',\n" +
-"    'The weather is nice',\n" +
-"    'This is the message feed',\n" +
-"    'And I am the fourth message'\n" +
-"  ]\n" +
+"const props = defineProps({\n" +
+"  messages: {\n" +
+"    type: Array,\n" +
+"    default: [],\n" +
+"  }\n" +
+"})\n" +
 "</script>\n"
+
+
+const messages = "const messages = [\n" +
+"  'Hello, how are you?',\n" +
+"  'The weather is nice',\n" +
+"  'This is message feed',\n" +
+"  'And I am the fourth message'\n" +
+"];\n" +
+"\n" +
+"export default messages;\n"
 
 
 const TheWelcome = "<script setup>\n" +
@@ -446,9 +507,9 @@ const Exercise03 = {
           },
 
           "indexRouter.js": {
-            name: "indexRouter.js",
+            name: "index.js",
             path: "Part07/Exercise03/indexRouter.js",
-            resetCode: indexRouter
+            resetCode: index
           },
 
             "AboutView.vue": {
@@ -457,16 +518,34 @@ const Exercise03 = {
             resetCode: AboutView
             },
 
+            "HelloWorld.vue": {
+            name: "HelloWorld.vue",
+            path: "Part07/Exercise03/HelloWorld.vue",
+            resetCode: HelloWorld
+            },
+
+            "HomeView.vue": {
+            name: "HomeView.vue",
+            path: "Part07/Exercise03/HomeView.vue",
+            resetCode: HomeView
+            },
+
+          "Message.vue": {
+            name: "Message.vue",
+            path: "Part07/Exercise03/Message.vue",
+            resetCode: Message
+          },
+
           "MessageFeed.vue": {
             name: "MessageFeed.vue",
             path: "Part07/Exercise03/MessageFeed.vue",
             resetCode: MessageFeed
           },
 
-          "HomeView.vue": {
-            name: "HomeView.vue",
-            path: "Part07/Exercise03/HomeView.vue",
-            resetCode: HomeView
+          "messages.js": {
+            name: "messages.js",
+            path: "Part07/Exercise03/messages.js",
+            resetCode: messages
           },
 
           "TheWelcome.vue": {
@@ -480,12 +559,6 @@ const Exercise03 = {
             path: "Part07/Exercise03/WelcomeItem.vue",
             resetCode: WelcomeItem
           },
-
-            "HelloWorld.vue": {
-            name: "HelloWorld.vue",
-            path: "Part07/Exercise03/HelloWorld.vue",
-            resetCode: HelloWorld
-            },
 
             "IconCommunity.vue": {
             name: "IconCommunity.vue",
