@@ -1,0 +1,8 @@
+
+#vite-plugin-hmr {
+  display: none !important;
+}
+
+.vtd-overlay {
+  display: none !important;
+}
