@@ -57,5 +57,5 @@ app.post('/write/:part/:exercise/:file', (req, res) => {
   });
 });
 
-
-app.listen(3001, () => console.log('Server running on http://localhost:3001'));
+const hostname = process.env.HOST || 'localhost';
+app.listen(3001, hostname, () => console.log('Server running on http://localhost:3001'));

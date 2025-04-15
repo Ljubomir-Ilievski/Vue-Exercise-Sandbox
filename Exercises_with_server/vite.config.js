@@ -23,6 +23,7 @@ export default defineConfig({
     hmr: {
       overlay: false
     },
-    port: 5173
+    port: 5173,
+    host: process.env.HOST || 'localhost'
   },
 })

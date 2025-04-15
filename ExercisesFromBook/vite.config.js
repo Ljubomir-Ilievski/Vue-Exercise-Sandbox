@@ -24,7 +24,8 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5174
+    port: 5174,
+    host: process.env.HOST || 'localhost'
   }
 
 })
