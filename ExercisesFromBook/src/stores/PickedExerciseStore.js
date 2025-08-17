@@ -13,25 +13,22 @@ import { warn } from 'vue'
 
 export const PickedExerciseStore = defineStore("PickedExerciseStore", {
   state() {
-    const pickedExerciseObject = wholeExerciseObject01
-
-
-
     return {
-      /*currentExercise: wholeExerciseObject01,
-      appcode: wholeExerciseObject01.components.App.code,
-      compiledComponent: compileVueComponent2(pickedExerciseObject.components.App),
-      currentActiveFile: 'App'*/
 
       currentExercise: wholeExerciseObject01,
       appcode: null,
       currentActiveFile: App_Name,
-      compiledComponent: pickedExerciseObject.AppComponent,
       ipExerciseServer: "http://localhost:5173"
+      /*compiledComponent: pickedExerciseObject.AppComponent,*/
+      /*currentExercise: wholeExerciseObject01,
+      appcode: wholeExerciseObject01.components.App.code,
+      compiledComponent: compileVueComponent2(pickedExerciseObject.components.App),
+      currentActiveFile: 'App'*/
     }
+    /* const pickedExerciseObject = wholeExerciseObject01*/
   },
   actions: {
-    changeExercise(exercise) {
+  /*  changeExercise(exercise) {
      this.currentExercise = exercise
      this.appcode = exercise.components.App.code
      this.compiledComponent = compileVueComponent2(exercise.components.App)
@@ -43,8 +40,7 @@ export const PickedExerciseStore = defineStore("PickedExerciseStore", {
     compileComponent() {
       this.currentExercise.components[this.currentActiveFile].code = this.appcode;
       this.compiledComponent = compileVueComponent2(this.currentExercise.components.App);
-    },
-
+    },*/
     changeFileCodeRWAPI(file) {
       localStorage.setItem("activeFilePath", file.path);
       this.currentActiveFile = file.name
@@ -53,16 +49,16 @@ export const PickedExerciseStore = defineStore("PickedExerciseStore", {
 
     compileComponentRWAPI() {
       try {
-        let {descriptor, errors} = parse(this.appcode)
+        let { errors} = parse(this.appcode)
 
         if (errors.length > 0) {
           alert(errors)
         }
         else {
           let currentActiveFilePath =  this.currentExercise.components[this.currentActiveFile].path
-          //  writeCodeToExercise(currentActiveFilePath, this.appcode);
           writeFileCode(currentActiveFilePath, this.appcode).then(r => r)
-          document.getElementById("iframeExerciseApp").contentWindow.postMessage({action: "UpdateExercise"}, this.ipExerciseServer)
+          document.getElementById("iframeExerciseApp").contentWindow.postMessage({action: "UpdateExercise"},
+          this.ipExerciseServer)
         }
       }
       catch(err) {
@@ -74,7 +70,8 @@ export const PickedExerciseStore = defineStore("PickedExerciseStore", {
       let resetCode = this.currentExercise.components[this.currentActiveFile].resetCode
       let currentActiveFilePath =  this.currentExercise.components[this.currentActiveFile].path
       writeFileCode(currentActiveFilePath, resetCode).then(r => r)
-      document.getElementById("iframeExerciseApp").contentWindow.postMessage({action: "UpdateExercise"}, this.ipExerciseServer)
+      document.getElementById("iframeExerciseApp").contentWindow.postMessage({action: "UpdateExercise"},
+      this.ipExerciseServer)
       this.appcode = resetCode
     },
 
@@ -83,14 +80,12 @@ export const PickedExerciseStore = defineStore("PickedExerciseStore", {
       localStorage.setItem("activeFilePath", exercise.components[App_Name].path);
       localStorage.setItem("Exercise", JSON.stringify(exercise));
       let routerPath = exercise.routerPath ? exercise.routerPath : null
-      console.log("ROUTER PATH WHILE CHANGING", routerPath)
-      document.getElementById("iframeExerciseApp").contentWindow.postMessage({action: "ChangeExercise", exercisePath: exercise.components[App_Name].path,
-                                                                                                  routerPath: routerPath}, this.ipExerciseServer)
+      document.getElementById("iframeExerciseApp").contentWindow.postMessage(
+        {action: "ChangeExercise", exercisePath: exercise.components[App_Name].path,
+                 routerPath: routerPath}, this.ipExerciseServer)
       this.currentExercise = exercise
-     // this.appcode = readCodeFromExercise(exercise.components.App.path);
       fetchFileCode(exercise.components[App_Name].path).then(result => this.appcode = result)
       this.currentActiveFile = App_Name
-     // this.compiledComponent = exercise.AppComponent;
     },
 
   }

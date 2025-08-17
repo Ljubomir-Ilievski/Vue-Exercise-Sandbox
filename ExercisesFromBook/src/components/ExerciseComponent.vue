@@ -21,16 +21,7 @@ export default {
 
 <style scoped>
 
-.my-component { /*STO MU E OVDE SO CLASATA KOGA E SCOPED*/
-  /*width: 80%;
-  height: 6%;
-  background-color: #F78764;
-  border-width: 1px;
-  border-color: navajowhite;
-  color: white;
-  transition: 0.3s*/
-
-
+.my-component {
   display: none;
 }
 .isOpen{

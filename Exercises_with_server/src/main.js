@@ -27,3 +27,4 @@ app.use(createPinia())
 app.use(routerDynamic)
 
 app.mount('#app')
+

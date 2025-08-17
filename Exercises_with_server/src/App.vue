@@ -22,29 +22,18 @@ export default {
     }
 
     window.addEventListener('message', (e) => {
-
         if (e.data.action === 'ChangeExercise') {
-
           let exercisePath = e.data["exercisePath"]
-
           exercisePath = "./components/ExerciseStrings/" + exercisePath
-          //Set To Local Storage
           localStorage.setItem('exercisePath', exercisePath)
-
-          console.log(exercisePath)
-
              import(exercisePath)
             .then(promise => this.compiledComponent = promise.default)
                .catch(e => console.log(e))
-
           if (e.data.routerPath !== null){
             console.log( "ROUTERPATH","./components/ExerciseStrings/" + e.data.routerPath)
             localStorage.setItem("routerPath", "./components/ExerciseStrings/" + e.data.routerPath)
-
-
           }
           location.reload()
-
         }
         if (e.data.action === 'UpdateExercise') {
             location.reload()

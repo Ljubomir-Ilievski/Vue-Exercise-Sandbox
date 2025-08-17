@@ -15,3 +15,4 @@ export const lectures = [Lecture01, Lecture02, Lecture03,
                               Lecture04, Lecture05, Lecture06,
                               Lecture07, Lecture08, Lecture09,
                               Lecture10,Lecture11]
+

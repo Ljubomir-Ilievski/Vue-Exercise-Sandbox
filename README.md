@@ -15,3 +15,5 @@ Note. You need to have Docker Engine installed. **I recommend you start the proj
 Simply run node start_script.js at the script's path in your terminal and the project should start, still due to version differences, this way is not recommended.
 
 ## Note. The project will be accessible on http://localhost:5174, but for the project to work correctly you need to have ports 5173 and 3001 free.
+
+Made by **Ljubomir Ilieveski**
