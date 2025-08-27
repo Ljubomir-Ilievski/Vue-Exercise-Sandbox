@@ -19,6 +19,10 @@ export default {
   props: {
     lecture: {
       required: true,
+    },
+    referenceToClickedExercise: {
+      required: true,
+      type: Boolean
     }
   }
 }
@@ -30,7 +34,7 @@ export default {
   <div class="component" v-on:click="toggleOpen">
     {{lecture.name}}
   </div>
-    <ExerciseComponent v-for="exercise in lecture.exercises" :key="exercise" :exercise="exercise" v-bind:isOpen="isOpen"></ExerciseComponent>
+    <ExerciseComponent :referenceToClickedExercise="referenceToClickedExercise" v-for="exercise in lecture.exercises" :key="exercise" :exercise="exercise" v-bind:isOpen="isOpen"></ExerciseComponent>
 
 
 </template>
@@ -44,6 +48,7 @@ export default {
   border-width: 1px;
   border-color: navajowhite;
   color: white;
+  cursor: pointer
 }
 
 

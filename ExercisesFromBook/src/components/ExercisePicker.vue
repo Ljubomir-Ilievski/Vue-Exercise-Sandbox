@@ -11,7 +11,9 @@ export default {
   data(){
     return {
       lectures_component: lectures,
-      exercisePicerToggle: ExercisePickerToggleStore()
+      exercisePicerToggle: ExercisePickerToggleStore(),
+
+      referenceToClickedExercise: null,
     }
   },
   components:{
@@ -28,7 +30,7 @@ export default {
 <template>
   <div class="component"
         v-bind:class="{toggleOff: exercisePicerToggle.isOpen }">
-    <Lectures_component v-for="lecture in this.lectures_component" :key="lecture.name" :lecture="lecture"></Lectures_component>
+    <Lectures_component :referenceToClickedExercise="referenceToClickedExercise" v-for="lecture in this.lectures_component" :key="lecture.name" :lecture="lecture"></Lectures_component>
   </div>
 </template>
 

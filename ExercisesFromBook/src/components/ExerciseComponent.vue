@@ -2,11 +2,16 @@
 import { PickedExerciseStore } from '@/stores/PickedExerciseStore.js'
 
 export default {
-  props: ['exercise', 'isOpen'],
+  props: ['exercise', 'isOpen', 'referenceToClickedExercise'],
 
   data(){
     return {
       pickedExerciseStore: PickedExerciseStore()
+    }
+  },
+  methods: {
+    handleClick(){
+      this.pickedExerciseStore.changeExerciseRWAPI(this.exercise)
     }
   }
 
@@ -14,7 +19,7 @@ export default {
 </script>
 
 <template>
-  <div v-on:click="pickedExerciseStore.changeExerciseRWAPI(this.exercise)" class="my-component" v-bind:class="{isOpen: isOpen}">
+  <div :class="{'clicked': pickedExerciseStore.currentExercise === exercise}" v-on:click="pickedExerciseStore.changeExerciseRWAPI(this.exercise)" class="my-component" v-bind:class="{isOpen: isOpen}">
     {{exercise.name}}
   </div>
 </template>
@@ -23,6 +28,7 @@ export default {
 
 .my-component {
   display: none;
+  cursor: pointer
 }
 .isOpen{
   transition: 1s;
@@ -33,6 +39,10 @@ export default {
   border-width: 1px;
   border-color: navajowhite;
   color: white;
+}
+
+.clicked {
+  background-color: #803101;
 }
 
 </style>

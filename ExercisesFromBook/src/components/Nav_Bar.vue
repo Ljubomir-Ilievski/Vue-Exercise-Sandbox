@@ -30,8 +30,8 @@ export default {
       </button>
 
       <div class="flex">
-      <button @click="pickedExercise.compileComponentRWAPI()" class="bg-coral rounded-full p-1 px-3 text-white">Compile</button>
-        <button v-on:click="pickedExercise.resetComponentCode()" class="bg-coral rounded-full p-1 px-3 text-white ml-2">Reset Code</button>
+      <button style="cursor: pointer" @click="pickedExercise.compileComponentRWAPI()" class="bg-coral rounded-full p-1 px-3 text-white">Compile</button>
+        <button style="cursor: pointer" v-on:click="pickedExercise.resetComponentCode()" class="bg-coral rounded-full p-1 px-3 text-white ml-2">Reset Code</button>
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@ export default {
 </script>
 
 <template>
-<div @click="pickedExercise.changeFileCodeRWAPI(file)" class="component w-auto h-auto p-2">
+<div :class="{'clicked': this.pickedExercise.currentActiveFile === this.file.name}" @click="pickedExercise.changeFileCodeRWAPI(file)" class="component w-auto h-auto p-2">
   {{file.name}}
 </div>
 </template>
@@ -24,6 +24,11 @@ export default {
 
 .component {
   border: 1px solid #F78764;
+  cursor: pointer
+}
+.clicked {
+  background-color: #803101;
+  color: white;
 }
 
 </style>
